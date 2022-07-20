@@ -1,0 +1,57 @@
+fileFormatVersion: 2
+guid: 64fb6dc10c827ef4c8c22d4221c4188b
+importerOverride: ZEPETO.Script.Compiler:ZEPETO.Script:TypescriptAssetImporter
+ScriptedImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 2
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+  script: {fileID: -1123457745, guid: 54cf806323ffe4418a4ce4cc63fe6b9d, type: 3}
+  isAssemblyDeclarations: 0
+  assembly: 
+  generateAllTypes: 1
+  types: []
+  generateWrapper: 0
+  overrideWrapperTypes: 0
+  wrapperTypes: []
+  WrapperFilters: []
+  wrapperOutputDirectory: Generated
+  compiledResult: "{\"source\":\"\\\"use strict\\\";\\r\\nObject.defineProperty(exports,
+    \\\"__esModule\\\", { value: true });\\r\\nconst UnityEngine_1 = require(\\\"UnityEngine\\\");\\r\\nconst
+    IconTrigger_1 = require(\\\"../UI/IconTrigger\\\");\\r\\nconst IconItemUI_1 =
+    require(\\\"../UI/IconItemUI\\\");\\r\\nconst UIPoolManager_1 = require(\\\"../UI/UIPoolManager\\\");\\r\\nconst
+    PlayerManager_1 = require(\\\"./PlayerManager\\\");\\r\\nconst BaseManager_1
+    = require(\\\"./BaseManager\\\");\\r\\nconst NetManager_1 = require(\\\"./NetManager\\\");\\r\\nclass
+    UIManager extends BaseManager_1.default {\\r\\n    constructor() {\\r\\n       
+    super(...arguments);\\r\\n        /* 3d Icon Triiger */\\r\\n        this.mIconItemMap
+    = new Map();\\r\\n        this.mIconTriggerMap = new Map();\\r\\n        this.ICON_ITEM_UI
+    = \\\"IconItemUI\\\";\\r\\n    }\\r\\n    static get Instance() {\\r\\n       
+    return UIManager._instance;\\r\\n    }\\r\\n    Awake() {\\r\\n        UIManager._instance
+    = this;\\r\\n    }\\r\\n    RegisterTriggerData(data) {\\r\\n        if (!this.mIconTriggerMap.has(data.eventId))
+    {\\r\\n            this.mIconTriggerMap.set(Number(data.eventId), data);\\r\\n       
+    }\\r\\n        else {\\r\\n            console.error(\\\"Register Error!\\\");\\r\\n       
+    }\\r\\n    }\\r\\n    GetTriggerData(eventId) {\\r\\n        if (this.mIconTriggerMap.has(eventId))
+    {\\r\\n            return this.mIconTriggerMap.get(eventId);\\r\\n        }\\r\\n       
+    return null;\\r\\n    }\\r\\n    ShowIcon(data) {\\r\\n        console.log(data.eventId);\\r\\n       
+    let iconItem = null;\\r\\n        if (this.mIconItemMap.has(data.eventId)) {\\r\\n           
+    iconItem = this.mIconItemMap.get(data.eventId);\\r\\n        }\\r\\n        if
+    (iconItem == null) {\\r\\n            //\u4ECE\u5BF9\u8C61\u6C60\u83B7\u53D6\\r\\n           
+    let poolItem = UIPoolManager_1.default.Instance.Spawn(this.ICON_ITEM_UI);\\r\\n           
+    let iconObj = poolItem.obj;\\r\\n            iconObj.transform.SetParent(this.mDynamicCanvas.transform);\\r\\n           
+    iconItem = iconObj.GetComponent($typeof(IconItemUI_1.default));\\r\\n       
+    }\\r\\n        iconItem.SetData(data);\\r\\n        iconItem.Show();\\r\\n       
+    this.mIconItemMap.set(data.eventId, iconItem);\\r\\n    }\\r\\n    HideIcon(data)
+    {\\r\\n        if (this.mIconItemMap.has(data.eventId)) {\\r\\n            let
+    uiItem = this.mIconItemMap.get(data.eventId);\\r\\n            uiItem.Hide();\\r\\n           
+    this.mIconItemMap.delete(data.eventId);\\r\\n            UIPoolManager_1.default.Instance.UnSpawn(this.ICON_ITEM_UI);\\r\\n       
+    }\\r\\n    }\\r\\n    HideAllIcon() {\\r\\n        // todo\\r\\n        this.mIconItemMap.forEach((itemUI,
+    id) => {\\r\\n            itemUI.Hide();\\r\\n        });\\r\\n    }\\r\\n   
+    ShowAllIcon() {\\r\\n        this.mIconItemMap.forEach((itemUI, id) => {\\r\\n           
+    itemUI.Show();\\r\\n        });\\r\\n    }\\r\\n    ClickIcon(data) {\\r\\n       
+    this.SendEvent(NetManager_1.sEventArg.GestureSync, data);\\r\\n    }\\r\\n   
+    // Trigger \u662F\u5426\u88AB\u5360\u7528\\r\\n    CheckIfTriggerLocked(eventId)
+    {\\r\\n        return this.CheckGesture(eventId);\\r\\n    }\\r\\n}\\r\\nexports.default
+    = UIManager;\\r\\n//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiVUlNYW5hZ2VyLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiVUlNYW5hZ2VyLnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7O0FBQ0EsNkNBQTREO0FBQzVELG1EQUEyQztBQUMzQyxpREFBeUM7QUFDekMsdURBQStDO0FBQy9DLG1EQUEyQztBQUMzQywrQ0FBdUM7QUFFdkMsNkNBQXdDO0FBRXhDLE1BQXFCLFNBQVUsU0FBUSxxQkFBVztJQUFsRDs7UUFlSSxxQkFBcUI7UUFDYixpQkFBWSxHQUE0QixJQUFJLEdBQUcsRUFBc0IsQ0FBQztRQUN0RSxvQkFBZSxHQUE4QixJQUFJLEdBQUcsRUFBdUIsQ0FBQztRQUNuRSxpQkFBWSxHQUFZLFlBQVksQ0FBQztJQW9FMUQsQ0FBQztJQWxGVSxNQUFNLEtBQUssUUFBUTtRQUN0QixPQUFPLFNBQVMsQ0FBQyxTQUFTLENBQUM7SUFDL0IsQ0FBQztJQUtELEtBQUs7UUFDRCxTQUFTLENBQUMsU0FBUyxHQUFHLElBQUksQ0FBQztJQUMvQixDQUFDO0lBT0QsbUJBQW1CLENBQUMsSUFBa0I7UUFDbEMsSUFBRyxDQUFDLElBQUksQ0FBQyxlQUFlLENBQUMsR0FBRyxDQUFDLElBQUksQ0FBQyxPQUFPLENBQUMsRUFBQztZQUN2QyxJQUFJLENBQUMsZUFBZSxDQUFDLEdBQUcsQ0FBQyxNQUFNLENBQUMsSUFBSSxDQUFDLE9BQU8sQ0FBQyxFQUFFLElBQUksQ0FBQyxDQUFDO1NBQ3hEO2FBQ0k7WUFDRCxPQUFPLENBQUMsS0FBSyxDQUFDLGlCQUFpQixDQUFDLENBQUM7U0FDcEM7SUFDTCxDQUFDO0lBRUQsY0FBYyxDQUFDLE9BQWdCO1FBQzNCLElBQUcsSUFBSSxDQUFDLGVBQWUsQ0FBQyxHQUFHLENBQUMsT0FBTyxDQUFDLEVBQUM7WUFDakMsT0FBTyxJQUFJLENBQUMsZUFBZSxDQUFDLEdBQUcsQ0FBQyxPQUFPLENBQUMsQ0FBQztTQUM1QztRQUNELE9BQU8sSUFBSSxDQUFDO0lBQ2hCLENBQUM7SUFHRCxR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\",\"assetPath\":\"Assets/Script/GameManager/UIManager.ts\",\"manifest\":{\"properties\":[{\"assembly\":\"UnityEngine.CoreModule\",\"name\":\"mDynamicCanvas\",\"type\":\"UnityEngine.GameObject\",\"isArray\":false,\"initValue\":[],\"enumKeys\":[],\"enumValues\":[],\"attributes\":[]},{\"assembly\":\"UnityEngine.CoreModule\",\"name\":\"mStaticCanvas\",\"type\":\"UnityEngine.GameObject\",\"isArray\":false,\"initValue\":[],\"enumKeys\":[],\"enumValues\":[],\"attributes\":[]}],\"name\":\"UIManager\",\"description\":\"\"},\"isCompiled\":true}"
+  typescriptHash: dad31f3b7e8ccabb9ba25ed97e9e87b0

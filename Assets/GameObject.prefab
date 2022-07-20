@@ -1,0 +1,147 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &8641155917595127057
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8641155917595127063}
+  - component: {fileID: 8641155917595127056}
+  m_Layer: 8
+  m_Name: ZepetoPlayers
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8641155917595127063
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8641155917595127057}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 8641155918535634904}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8641155917595127056
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8641155917595127057}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -206261123, guid: d328479d06a874cd1bda7a86f9cdd3a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  setting: {fileID: 0}
+  cameraData:
+    cameraPrefab: {fileID: 5806182858035002866, guid: 5be4eddc5b02f4ec0a07a69db26df962, type: 3}
+    maxZoomDistance: 15
+    minZoomDistance: 1
+    maxPitch: 80
+    minPitch: -80
+    offset: {x: 0, y: 0, z: 0}
+    speed: 20
+    sensitivity: 5
+    layer:
+      serializedVersion: 2
+      m_Bits: 512
+  characterData:
+    slopeLimit: 45
+    stepOffset: 0.3
+    skinWidth: 0.0001
+    minMoveDistance: 0.001
+    center: {x: 0, y: 0.6, z: 0}
+    radius: 0.23
+    height: 1.2
+    walkSpeed: 2
+    runSpeed: 5
+    jumpPower: 5
+    layer:
+      serializedVersion: 2
+      m_Bits: 8
+    animatorController: {fileID: 9100000, guid: 019901d3486cc411abc6c84594c03743, type: 2}
+    shadow: {fileID: 0}
+  controllerData:
+    inputAsset: {fileID: -944628639613478452, guid: 090135bc9e5ee4c89b1642240eb723fe, type: 3}
+    eventSystem: {fileID: 7328100774219155841, guid: 67971ba158b48401988f9aad07940d6f, type: 3}
+    useDefaultVirtualController: 1
+    verticalController: {fileID: 8523051459139762370, guid: 33446b9369e354b00a7ab43885afbe88, type: 3}
+    horizontalController: {fileID: 2787167779785370926, guid: 9b7a03709461140b4b3fc85aa8c5d741, type: 3}
+  floatingUIData:
+    showNickNameLocalPlayer: 0
+    showNickNameOtherPlayers: 1
+    showBubbleChatLocalPlayer: 1
+    showBubbleChatOtherPlayers: 1
+    useMiniProfileOnApp: 1
+  OnAddedLocalPlayer:
+    m_PersistentCalls:
+      m_Calls: []
+  OnAddedPlayer:
+    m_PersistentCalls:
+      m_Calls: []
+  OnRemovedPlayer:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!1 &8641155918535634906
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8641155918535634904}
+  - component: {fileID: 8641155918535634905}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8641155918535634904
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8641155918535634906}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 8641155917595127063}
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8641155918535634905
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8641155918535634906}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1673316429, guid: 921f0445823004a16a499d629dd566a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  script:
+    keys: []
+    unityValues: []
+    values: []
+    unityArrayValues: []
+    arrayValues: []
+    script: {fileID: 4458252877524076426, guid: 487c16ae283f3934d8e6e2974a5df470, type: 3}
+    isExpaned: 0

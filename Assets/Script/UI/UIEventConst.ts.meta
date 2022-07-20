@@ -1,0 +1,26 @@
+fileFormatVersion: 2
+guid: d5809b9d4eea26d4780761fc5f4285ef
+importerOverride: ZEPETO.Script.Compiler:ZEPETO.Script:TypescriptAssetImporter
+ScriptedImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 2
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+  script: {fileID: -1123457745, guid: 54cf806323ffe4418a4ce4cc63fe6b9d, type: 3}
+  isAssemblyDeclarations: 0
+  assembly: 
+  generateAllTypes: 1
+  types: []
+  generateWrapper: 0
+  overrideWrapperTypes: 0
+  wrapperTypes: []
+  WrapperFilters: []
+  wrapperOutputDirectory: Generated
+  compiledResult: '{"source":"\"use strict\";\r\nObject.defineProperty(exports, \"__esModule\",
+    { value: true });\r\nexports.UIEventCustom = void 0;\r\nvar UIEventCustom;\r\n(function
+    (UIEventCustom) {\r\n    UIEventCustom[UIEventCustom[\"None\"] = 0] = \"None\";\r\n   
+    UIEventCustom[UIEventCustom[\"SetGesture_GQ\"] = 1] = \"SetGesture_GQ\";\r\n})(UIEventCustom
+    = exports.UIEventCustom || (exports.UIEventCustom = {}));\r\n//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiVUlFdmVudE1hbmFnZXIuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyJVSUV2ZW50TWFuYWdlci50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7QUFFQSxJQUFZLGFBR1g7QUFIRCxXQUFZLGFBQWE7SUFDckIsaURBQUksQ0FBQTtJQUNKLG1FQUFhLENBQUE7QUFDakIsQ0FBQyxFQUhXLGFBQWEsR0FBYixxQkFBYSxLQUFiLHFCQUFhLFFBR3hCIn0=","assetPath":"Assets/Script/GameManager/UIEventManager.ts","manifest":{"properties":[],"name":"UIEventManager","description":""},"isCompiled":true}'
+  typescriptHash: ee8cf4d85a41ade2b75179660f982e72

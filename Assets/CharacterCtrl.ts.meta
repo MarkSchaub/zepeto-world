@@ -1,0 +1,31 @@
+fileFormatVersion: 2
+guid: 487c16ae283f3934d8e6e2974a5df470
+importerOverride: ZEPETO.Script.Compiler:ZEPETO.Script:TypescriptAssetImporter
+ScriptedImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 2
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+  script: {fileID: -1123457745, guid: 54cf806323ffe4418a4ce4cc63fe6b9d, type: 3}
+  isAssemblyDeclarations: 0
+  assembly: 
+  generateAllTypes: 1
+  types: []
+  generateWrapper: 0
+  overrideWrapperTypes: 0
+  wrapperTypes: []
+  WrapperFilters: []
+  wrapperOutputDirectory: Generated
+  compiledResult: '{"source":"\"use strict\";\r\nObject.defineProperty(exports, \"__esModule\",
+    { value: true });\r\nconst ZEPETO_Script_1 = require(\"ZEPETO.Script\");\r\nconst
+    ZEPETO_Character_Controller_1 = require(\"ZEPETO.Character.Controller\");\r\nconst
+    ZEPETO_World_1 = require(\"ZEPETO.World\");\r\nclass CharacterCtrl extends ZEPETO_Script_1.ZepetoScriptBehaviour
+    {\r\n    Start() {\r\n        console.log(ZEPETO_World_1.WorldService.userId);\r\n       
+    $extension(\"ZEPETO.Character.Controller.ZepetoPlayersExtension\").CreatePlayerWithUserId(ZEPETO_Character_Controller_1.ZepetoPlayers.instance,
+    ZEPETO_World_1.WorldService.userId, new ZEPETO_Character_Controller_1.SpawnInfo(),
+    true);\r\n        ZEPETO_Character_Controller_1.ZepetoPlayers.instance.OnAddedLocalPlayer.AddListener(()
+    => {\r\n            let _player = ZEPETO_Character_Controller_1.ZepetoPlayers.instance.LocalPlayer;\r\n       
+    });\r\n    }\r\n}\r\nexports.default = CharacterCtrl;\r\n//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiQ2hhcmFjdGVyQ3RybC5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIkNoYXJhY3RlckN0cmwudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7QUFBQSxpREFBcUQ7QUFDckQsNkVBQWtIO0FBQ2xILCtDQUEyQztBQUkzQyxNQUFxQixhQUFjLFNBQVEscUNBQXFCO0lBRTVELEtBQUs7UUFDRCxPQUFPLENBQUMsR0FBRyxDQUFDLDJCQUFZLENBQUMsTUFBTSxDQUFDLENBQUM7UUFDakMsaUVBQXVCLHNCQUFzQixDQUE3QywyQ0FBYSxDQUFDLFFBQVEsRUFBd0IsMkJBQVksQ0FBQyxNQUFNLEVBQUUsSUFBSSx1Q0FBUyxFQUFFLEVBQUUsSUFBSSxFQUFFO1FBRTFGLDJDQUFhLENBQUMsUUFBUSxDQUFDLGtCQUFrQixDQUFDLFdBQVcsQ0FBQyxHQUFHLEVBQUU7WUFDdkQsSUFBSSxPQUFPLEdBQWdCLDJDQUFhLENBQUMsUUFBUSxDQUFDLFdBQVcsQ0FBQztRQUNsRSxDQUFDLENBQUMsQ0FBQztJQUVQLENBQUM7Q0FFSjtBQVpELGdDQVlDIn0=","assetPath":"Assets/CharacterCtrl.ts","manifest":{"properties":[],"name":"CharacterCtrl","description":""},"isCompiled":true}'
+  typescriptHash: 92971d13c7ebf1c860c9883ef90e70bc

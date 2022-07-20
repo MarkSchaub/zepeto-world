@@ -1,0 +1,7 @@
+{
+"State" : {"players" : {"map" : "sPlayer"}},
+"sPlayer" : {"id" : "uint8","state" : "uint8","position" : "sVector3","rotation" : "sVector3","gesture" : "uint8"},
+"sPianoState" : {"isPlayPiano" : "boolean","musicId" : "int8","isDouble" : "boolean","startTime" : "int8"},
+"sVector3" : {"x" : "int16","y" : "int16","z" : "int16"},
+"sPlayerInfo" : {"sessionId" : "string","userId" : "string"}
+}

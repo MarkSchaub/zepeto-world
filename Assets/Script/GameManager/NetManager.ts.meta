@@ -1,0 +1,65 @@
+fileFormatVersion: 2
+guid: 4e6829bdb9f005244a06632506870929
+importerOverride: ZEPETO.Script.Compiler:ZEPETO.Script:TypescriptAssetImporter
+ScriptedImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 2
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+  script: {fileID: -1123457745, guid: 54cf806323ffe4418a4ce4cc63fe6b9d, type: 3}
+  isAssemblyDeclarations: 0
+  assembly: 
+  generateAllTypes: 1
+  types: []
+  generateWrapper: 0
+  overrideWrapperTypes: 0
+  wrapperTypes: []
+  WrapperFilters: []
+  wrapperOutputDirectory: Generated
+  compiledResult: "{\"source\":\"\\\"use strict\\\";\\r\\nObject.defineProperty(exports,
+    \\\"__esModule\\\", { value: true });\\r\\nexports.sEventArg = void 0;\\r\\nconst
+    ZEPETO_Script_1 = require(\\\"ZEPETO.Script\\\");\\r\\nconst ZEPETO_World_1 =
+    require(\\\"ZEPETO.World\\\");\\r\\nconst ZEPETO_Multiplay_1 = require(\\\"ZEPETO.Multiplay\\\");\\r\\nconst
+    GameMain_1 = require(\\\"../GameMain\\\");\\r\\nvar sEventArg;\\r\\n(function
+    (sEventArg) {\\r\\n    sEventArg[\\\"TransformSync\\\"] = \\\"TransformSync\\\";\\r\\n   
+    sEventArg[\\\"PlayerStateSync\\\"] = \\\"PlayerStateSync\\\";\\r\\n    sEventArg[\\\"GestureSync\\\"]
+    = \\\"GestureSync\\\";\\r\\n    sEventArg[\\\"PlayerInfoSync\\\"] = \\\"PlayerInfoSync\\\";\\r\\n})(sEventArg
+    = exports.sEventArg || (exports.sEventArg = {}));\\r\\n// NetManager \u8D1F\u8D23\u7BA1\u7406\u7F51\u7EDC\u6570\u636E\uFF0C\u4EC5\u8D1F\u8D23\u6570\u636E\u7684\u53D1\u9001\u548C\u63A5\u53D7\uFF0C\u4E0D\u8D1F\u8D23\u5904\u7406\u4E1A\u52A1\u903B\u8F91\\r\\n//
+    \u5F53\u6536\u5230\u4FE1\u606F\u540E\uFF0C\u4E0A\u62A5\u7ED9\u4E0A\u7EA7\\r\\n//
+    \u5B9A\u4E49\u6240\u6709\u670D\u52A1\u5668\u4E8B\u4EF6\uFF0C \u901A\u8FC7Room\u53D1\u9001\u7ED9server\\r\\nclass
+    NetManager extends ZEPETO_Script_1.ZepetoScriptBehaviour {\\r\\n    static get
+    Instance() {\\r\\n        return NetManager._instance;\\r\\n    }\\r\\n    Awake()
+    {\\r\\n        NetManager._instance = this;\\r\\n        this.mMultiplay = this.gameObject.GetComponent($typeof(ZEPETO_World_1.ZepetoWorldMultiplay));\\r\\n       
+    if (this.mMultiplay == null) {\\r\\n            this.mMultiplay = this.gameObject.AddComponent($typeof(ZEPETO_World_1.ZepetoWorldMultiplay));\\r\\n       
+    }\\r\\n    }\\r\\n    Start() {\\r\\n        this.mMultiplay.add_RoomCreated(this.OnRoomCreated.bind(this));\\r\\n       
+    this.mMultiplay.add_RoomJoined(this.OnRoomJoined.bind(this));\\r\\n        this.mMultiplay.add_RoomError(this.OnRoomError.bind(this));\\r\\n       
+    this.mMultiplay.add_RoomLeave(this.OnRoomLeave.bind(this));\\r\\n    }\\r\\n   
+    OnDestroy() {\\r\\n        if (this.mRoom.IsConnected) {\\r\\n            this.mRoom.Leave(true);\\r\\n           
+    console.error(\\\"room Leave!\\\");\\r\\n        }\\r\\n    }\\r\\n    OnRoomCreated(room)
+    {\\r\\n        this.mRoom = room;\\r\\n        console.log(\\\"OnRoomCreated!\\\");\\r\\n   
+    }\\r\\n    OnRoomJoined(room) {\\r\\n        this.BindServerEvent();\\r\\n       
+    this.mRoom.add_OnStateChange(this.OnStateChange.bind(this));\\r\\n        GameMain_1.default.Instance.InitRoomSessionId(this.mRoom.SessionId);\\r\\n       
+    console.log(`OnRoomJoined! , sessionId = ${this.mRoom.SessionId}`);\\r\\n   
+    }\\r\\n    OnRoomError(error) {\\r\\n        // todo \\r\\n        console.error(error.Message);\\r\\n   
+    }\\r\\n    OnRoomLeave(leave) {\\r\\n        // todo\\r\\n        // \u79BB\u5F00\u623F\u95F4\u540E\u505C\u6B62\u53D1\u9001\u6570\u636E\\r\\n       
+    this.mRoom.remove_OnStateChange(this.OnStateChange.bind(this));\\r\\n       
+    this.mRoom = null;\\r\\n        console.warn(\\\"OnRoomLeave!\\\");\\r\\n   
+    }\\r\\n    OnStateChange(state, isFirst) {\\r\\n        this.OnReceiveEvent(sEventArg.PlayerStateSync,
+    state.players);\\r\\n        if (isFirst) {\\r\\n            // \u83B7\u53D6\u7528\u6237\u4FE1\u606F\\r\\n           
+    this.SendEvent(sEventArg.PlayerInfoSync, new ZEPETO_Multiplay_1.RoomData());\\r\\n       
+    }\\r\\n    }\\r\\n    /* \u7ED1\u5B9A\u4E8B\u4EF6 */\\r\\n    BindServerEvent()
+    {\\r\\n        this.mRoom.AddMessageHandler($typeof($typeof(\\\"System.String\\\")),
+    sEventArg.PlayerInfoSync, message => {\\r\\n            this.OnReceiveEvent(sEventArg.PlayerInfoSync,
+    message);\\r\\n        });\\r\\n        //todo \\r\\n    }\\r\\n    OnReceiveEvent(eventName,
+    message) {\\r\\n        GameMain_1.default.Instance.HandleEvent(eventName, message);\\r\\n   
+    }\\r\\n    /* public API */\\r\\n    GetRoomElapsedTime() {\\r\\n        return
+    this.mElapsedTime;\\r\\n    }\\r\\n    SendEvent(eventName, data) {\\r\\n       
+    if (data == null) {\\r\\n            data = new ZEPETO_Multiplay_1.RoomData();\\r\\n       
+    }\\r\\n        if (this.mRoom.IsConnected) {\\r\\n            this.mRoom.Send(eventName,
+    data.GetObject());\\r\\n        }\\r\\n        else {\\r\\n            console.error(\\\"[SendEvent]
+    room unconnected\\\");\\r\\n            // todo  \u7F13\u5B58data \uFF0C some
+    event \u6062\u590D\u7F51\u7EDC\u540E\u91CD\u53D1\\r\\n        }\\r\\n    }\\r\\n}\\r\\nexports.default
+    = NetManager;\\r\\n//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiTmV0TWFuYWdlci5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIk5ldE1hbmFnZXIudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7O0FBQUEsaURBQXFEO0FBQ3JELCtDQUFtRDtBQUNuRCx1REFBaUY7QUFFakYsMENBQWtDO0FBRWxDLElBQVksU0FLWDtBQUxELFdBQVksU0FBUztJQUNqQiw0Q0FBK0IsQ0FBQTtJQUMvQixnREFBbUMsQ0FBQTtJQUNuQyx3Q0FBMkIsQ0FBQTtJQUMzQiw4Q0FBaUMsQ0FBQTtBQUNyQyxDQUFDLEVBTFcsU0FBUyxHQUFULGlCQUFTLEtBQVQsaUJBQVMsUUFLcEI7QUFFRCw0Q0FBNEM7QUFDNUMsZUFBZTtBQUNmLDZCQUE2QjtBQUU3QixNQUFxQixVQUFXLFNBQVEscUNBQXFCO0lBWWxELE1BQU0sS0FBSyxRQUFRO1FBQ3RCLE9BQU8sVUFBVSxDQUFDLFNBQVMsQ0FBQztJQUNoQyxDQUFDO0lBR0QsS0FBSztRQUNELFVBQVUsQ0FBQyxTQUFTLEdBQUcsSUFBSSxDQUFDO1FBQzVCLElBQUksQ0FBQyxVQUFVLEdBQUcsSUFBSSxDQUFDLFVBQVUsQ0FBQyxZQUFZLFNBQUMsbUNBQW9CLEVBQUcsQ0FBQztRQUN2RSxJQUFHLElBQUksQ0FBQyxVQUFVLElBQUksSUFBSSxFQUFDO1lBQ3ZCLElBQUksQ0FBQyxVQUFVLEdBQUcsSUFBSSxDQUFDLFVBQVUsQ0FBQyxZQUFZLFNBQUMsbUNBQW9CLEVBQUcsQ0FBQztTQUMxRTtJQUNMLENBQUM7SUFFRCxLQUFLO1FBQ0QsSUFBSSxDQUFDLFVBQVUsaUJBQWdCLElBQUksQ0FBQyxhQUFhLGFBQUM7UUFDbEQsSUFBSSxDQUFDLFVBQVUsZ0JBQWUsSUFBSSxDQUFDLFlBQVksYUFBQztRQUNoRCxJQUFJLENBQUMsVUFBVSxlQUFjLElBQUksQ0FBQyxXQUFXLGFBQUM7UUFDOUMsSUFBSSxDQUFDLFVBQVUsZUFBYyxJQUFJLENBQUMsV0FBVyxhQUFDO0lBQ2xELENBQUM7SUFFRCxTQUFT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\",\"assetPath\":\"Assets/Script/GameManager/NetManager.ts\",\"manifest\":{\"properties\":[],\"name\":\"NetManager\",\"description\":\"\"},\"isCompiled\":true}"
+  typescriptHash: 97276241feee6e421764fb2630205307

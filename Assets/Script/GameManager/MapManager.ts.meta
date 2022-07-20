@@ -1,0 +1,25 @@
+fileFormatVersion: 2
+guid: 13ffce6f46532d64badd2a0092e98150
+importerOverride: ZEPETO.Script.Compiler:ZEPETO.Script:TypescriptAssetImporter
+ScriptedImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 2
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+  script: {fileID: -1123457745, guid: 54cf806323ffe4418a4ce4cc63fe6b9d, type: 3}
+  isAssemblyDeclarations: 0
+  assembly: 
+  generateAllTypes: 1
+  types: []
+  generateWrapper: 0
+  overrideWrapperTypes: 0
+  wrapperTypes: []
+  WrapperFilters: []
+  wrapperOutputDirectory: Generated
+  compiledResult: '{"source":"\"use strict\";\r\nObject.defineProperty(exports, \"__esModule\",
+    { value: true });\r\nconst ZEPETO_Script_1 = require(\"ZEPETO.Script\");\r\nclass
+    MapManager extends ZEPETO_Script_1.ZepetoScriptBehaviour {\r\n    Start() {\r\n   
+    }\r\n}\r\nexports.default = MapManager;\r\n//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiTWFwTWFuYWdlci5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIk1hcE1hbmFnZXIudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7QUFBQSxpREFBcUQ7QUFFckQsTUFBcUIsVUFBVyxTQUFRLHFDQUFxQjtJQUV6RCxLQUFLO0lBRUwsQ0FBQztDQUVKO0FBTkQsNkJBTUMifQ==","assetPath":"Assets/TS/GameManager/MapManager.ts","manifest":{"properties":[],"name":"MapManager","description":""},"isCompiled":true}'
+  typescriptHash: 6af2cd738ffe333c85117bb0ed10e3e5

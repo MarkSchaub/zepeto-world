@@ -1,0 +1,63 @@
+fileFormatVersion: 2
+guid: d390a10d7f4ecf044b96c7a7e3e4ff71
+importerOverride: ZEPETO.Script.Compiler:ZEPETO.Script:TypescriptAssetImporter
+ScriptedImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 2
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+  script: {fileID: -1123457745, guid: 54cf806323ffe4418a4ce4cc63fe6b9d, type: 3}
+  isAssemblyDeclarations: 0
+  assembly: 
+  generateAllTypes: 1
+  types: []
+  generateWrapper: 0
+  overrideWrapperTypes: 0
+  wrapperTypes: []
+  WrapperFilters: []
+  wrapperOutputDirectory: Generated
+  compiledResult: "{\"source\":\"\\\"use strict\\\";\\r\\nObject.defineProperty(exports,
+    \\\"__esModule\\\", { value: true });\\r\\nconst ZEPETO_Script_1 = require(\\\"ZEPETO.Script\\\");\\r\\nconst
+    UIManager_1 = require(\\\"./GameManager/UIManager\\\");\\r\\nconst MapManager_1
+    = require(\\\"./GameManager/MapManager\\\");\\r\\nconst NetManager_1 = require(\\\"./GameManager/NetManager\\\");\\r\\nconst
+    PlayerManager_1 = require(\\\"./GameManager/PlayerManager\\\");\\r\\nconst UnityEngine_1
+    = require(\\\"UnityEngine\\\");\\r\\nconst ZEPETO_Multiplay_1 = require(\\\"ZEPETO.Multiplay\\\");\\r\\nclass
+    GameMain extends ZEPETO_Script_1.ZepetoScriptBehaviour {\\r\\n    static get
+    Instance() {\\r\\n        if (!GameMain._instance) {\\r\\n            const targetObj
+    = UnityEngine_1.GameObject.Find(\\\"GameMain\\\");\\r\\n            if (targetObj)\\r\\n               
+    GameMain._instance = targetObj.GetComponent($typeof(GameMain));\\r\\n       
+    }\\r\\n        return GameMain._instance;\\r\\n    }\\r\\n    Awake() {\\r\\n       
+    GameMain._instance = this;\\r\\n    }\\r\\n    Start() {\\r\\n        this.mNetMgr
+    = NetManager_1.default.Instance;\\r\\n        this.mPlayerMgr = PlayerManager_1.default.Instance;\\r\\n       
+    this.mUIMgr = UIManager_1.default.Instance;\\r\\n    }\\r\\n    InitRoomSessionId(sessionId)
+    {\\r\\n        this.mPlayerMgr.SetSessionId(sessionId);\\r\\n    }\\r\\n    OnStateUpdate(playerMap)
+    {\\r\\n        playerMap.ForEach((userId, player) => {\\r\\n            console.log(\\\"[OnStateUpdate]
+    \\\" + userId + \\\" -- \\\" + player.id);\\r\\n        });\\r\\n    }\\r\\n   
+    /* Handle Event */\\r\\n    HandleEvent(eventName, message) {\\r\\n        console.log(`HandleEvent
+    : [${eventName}]  !!!`);\\r\\n        switch (eventName) {\\r\\n            case
+    NetManager_1.sEventArg.PlayerStateSync:\\r\\n                this.mPlayerMgr.UpdatePlayerState(message);\\r\\n               
+    break;\\r\\n            case NetManager_1.sEventArg.PlayerInfoSync:\\r\\n               
+    this.mPlayerMgr.UpdatePlayerInfo(message);\\r\\n                break;\\r\\n       
+    }\\r\\n    }\\r\\n    SendEvent(eventName, message) {\\r\\n        console.log(`SendEvent
+    : [${eventName}]  !!!`);\\r\\n        switch (eventName) {\\r\\n            case
+    NetManager_1.sEventArg.GestureSync:\\r\\n                let eventId = 0;\\r\\n               
+    if (message === null) {\\r\\n                    PlayerManager_1.default.Instance.CancelLocalPlayerGesture();\\r\\n                   
+    this.mUIMgr.ShowAllIcon();\\r\\n                }\\r\\n                else {\\r\\n                   
+    eventId = Number(message.eventId);\\r\\n                    // \u9501\u5B9A+\u88AB\u5360\u7528\u7684\uFF0C
+    \u4E0D\u89E6\u53D1\u4E8B\u4EF6\\r\\n                    if (!(message.isLock
+    && this.CheckGesture(eventId)))\\r\\n                        PlayerManager_1.default.Instance.SetLocalPlayerGesture(message);\\r\\n                   
+    this.mUIMgr.HideAllIcon();\\r\\n                }\\r\\n                const
+    roomData = new ZEPETO_Multiplay_1.RoomData();\\r\\n                roomData.Add(\\\"gesture\\\",
+    eventId);\\r\\n                this.mNetMgr.SendEvent(eventName, roomData);\\r\\n               
+    break;\\r\\n            default:\\r\\n                this.mNetMgr.SendEvent(eventName,
+    message);\\r\\n                break;\\r\\n        }\\r\\n    }\\r\\n    GetEventData(eventName,
+    message) {\\r\\n        console.log(`GetEventData : [${eventName}]  !!! [${message}]`);\\r\\n       
+    switch (eventName) {\\r\\n            case NetManager_1.sEventArg.GestureSync:\\r\\n               
+    let eventId = Number(message);\\r\\n                if (eventId != null) {\\r\\n                   
+    return this.mUIMgr.GetTriggerData(eventId);\\r\\n                }\\r\\n               
+    break;\\r\\n            default:\\r\\n                return null;\\r\\n       
+    }\\r\\n    }\\r\\n    CheckGesture(gesture) {\\r\\n        return this.mPlayerMgr.CheckGesture(gesture);\\r\\n   
+    }\\r\\n}\\r\\nexports.default = GameMain;\\r\\n//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiR2FtZU1haW4uanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyJHYW1lTWFpbi50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOztBQUFBLGlEQUFxRDtBQUNyRCx1REFBK0M7QUFDL0MseURBQWlEO0FBQ2pELHlEQUE4RDtBQUM5RCwrREFBdUQ7QUFDdkQsNkNBQXVDO0FBR3ZDLHVEQUEwQztBQUUxQyxNQUFxQixRQUFTLFNBQVEscUNBQXFCO0lBS2hELE1BQU0sS0FBSyxRQUFRO1FBQ3RCLElBQUksQ0FBQyxRQUFRLENBQUMsU0FBUyxFQUFFO1lBQ3JCLE1BQU0sU0FBUyxHQUFHLHdCQUFVLENBQUMsSUFBSSxDQUFDLFVBQVUsQ0FBQyxDQUFDO1lBQzlDLElBQUksU0FBUztnQkFBRSxRQUFRLENBQUMsU0FBUyxHQUFHLFNBQVMsQ0FBQyxZQUFZLFNBQUMsUUFBUSxFQUFHLENBQUM7U0FDMUU7UUFDRCxPQUFPLFFBQVEsQ0FBQyxTQUFTLENBQUM7SUFDOUIsQ0FBQztJQVNELEtBQUs7UUFDRCxRQUFRLENBQUMsU0FBUyxHQUFHLElBQUksQ0FBQztJQUM5QixDQUFDO0lBRUQsS0FBSztRQUNELElBQUksQ0FBQyxPQUFPLEdBQUcsb0JBQVUsQ0FBQyxRQUFRLENBQUM7UUFDbkMsSUFBSSxDQUFDLFVBQVUsR0FBRyx1QkFBYSxDQUFDLFFBQVEsQ0FBQztRQUN6QyxJQUFJLENBQUMsTUFBTSxHQUFHLG1CQUFTLENBQUMsUUFBUSxDQUFDO0lBQ3JDLENBQUM7SUFFTSxpQkFBaUIsQ0FBQyxTQUFrQjtRQUN2QyxJQUFJLENBQUMsVUFBVSxDQUFDLFlBQVksQ0FBQyxTQUFTLENBQUMsQ0FBQztJQUM1QyxDQUFDO0lBRU0sYUFBYSxDQUFDLFNBQWU7UUFDaEMsU0FBUyxDQUFDLE9BQU8sQ0FBRSxDQUFDLE1BQWUsRUFBRSxNQUFnQixFQUFFLEVBQUU7WUFDckQsT0FBTyxDQUFDLEdBQUcsQ0FBQyxrQkFBa0IsR0FBRyxNQUFNLEdBQUcsTUFBTSxHQUFHLE1BQU0s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\",\"assetPath\":\"Assets/Script/GameMain.ts\",\"manifest\":{\"properties\":[],\"name\":\"GameMain\",\"description\":\"\"},\"isCompiled\":true}"
+  typescriptHash: fa702912dc283e95ee25ec121ff38d2c

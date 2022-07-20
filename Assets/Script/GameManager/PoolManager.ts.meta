@@ -1,0 +1,25 @@
+fileFormatVersion: 2
+guid: cb44c45abb3d3ce41a4f1e1947636b43
+importerOverride: ZEPETO.Script.Compiler:ZEPETO.Script:TypescriptAssetImporter
+ScriptedImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 2
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+  script: {fileID: -1123457745, guid: 54cf806323ffe4418a4ce4cc63fe6b9d, type: 3}
+  isAssemblyDeclarations: 0
+  assembly: 
+  generateAllTypes: 1
+  types: []
+  generateWrapper: 0
+  overrideWrapperTypes: 0
+  wrapperTypes: []
+  WrapperFilters: []
+  wrapperOutputDirectory: Generated
+  compiledResult: '{"source":"\"use strict\";\r\nObject.defineProperty(exports, \"__esModule\",
+    { value: true });\r\nconst ZEPETO_Script_1 = require(\"ZEPETO.Script\");\r\nclass
+    PoolManager extends ZEPETO_Script_1.ZepetoScriptBehaviour {\r\n    Start() {\r\n   
+    }\r\n}\r\nexports.default = PoolManager;\r\n//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiUG9vbE1hbmFnZXIuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyJQb29sTWFuYWdlci50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOztBQUFBLGlEQUFxRDtBQUVyRCxNQUFxQixXQUFZLFNBQVEscUNBQXFCO0lBRTFELEtBQUs7SUFFTCxDQUFDO0NBRUo7QUFORCw4QkFNQyJ9","assetPath":"Assets/Script/GameManager/PoolManager.ts","manifest":{"properties":[],"name":"PoolManager","description":""},"isCompiled":true}'
+  typescriptHash: a399cef40af5a0ac0448f435732ffceb

@@ -1,0 +1,42 @@
+fileFormatVersion: 2
+guid: ee256c044a213ab4ab55a1ce35629e93
+importerOverride: ZEPETO.Script.Compiler:ZEPETO.Script:TypescriptAssetImporter
+ScriptedImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 2
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+  script: {fileID: -1123457745, guid: 54cf806323ffe4418a4ce4cc63fe6b9d, type: 3}
+  isAssemblyDeclarations: 0
+  assembly: 
+  generateAllTypes: 1
+  types: []
+  generateWrapper: 0
+  overrideWrapperTypes: 0
+  wrapperTypes: []
+  WrapperFilters: []
+  wrapperOutputDirectory: Generated
+  compiledResult: "{\"source\":\"\\\"use strict\\\";\\r\\nObject.defineProperty(exports,
+    \\\"__esModule\\\", { value: true });\\r\\nconst UnityEngine_1 = require(\\\"UnityEngine\\\");\\r\\nconst
+    ZEPETO_Script_1 = require(\\\"ZEPETO.Script\\\");\\r\\nconst UIManager_1 = require(\\\"../GameManager/UIManager\\\");\\r\\nclass
+    IconTrigger extends ZEPETO_Script_1.ZepetoScriptBehaviour {\\r\\n    constructor()
+    {\\r\\n        super(...arguments);\\r\\n        this.useViewChange = false;\\r\\n       
+    this.cameraZoom = 1;\\r\\n        this.cameraAngle = new UnityEngine_1.Vector2(0,
+    45);\\r\\n        this.isLock = true;\\r\\n        this.isShow = false;\\r\\n   
+    }\\r\\n    Start() {\\r\\n        UIManager_1.default.Instance.RegisterTriggerData(this);\\r\\n   
+    }\\r\\n    OnTriggerEnter(collider) {\\r\\n        console.log(\\\"[OnTriggerEnter]\\\",
+    collider.tag);\\r\\n        if (collider.tag == \\\"Player\\\") {\\r\\n           
+    if (this.isLock) {\\r\\n                let gesture = Number(this.eventId);\\r\\n               
+    if (UIManager_1.default.Instance.CheckIfTriggerLocked(gesture)) {\\r\\n                   
+    // todo \u8981\u4E0D\u8981\u6267\u884C\u56DE\u8C03\uFF0C\u52A8\u6001\u663E\u793A\\r\\n                   
+    return;\\r\\n                }\\r\\n            }\\r\\n            this.isShow
+    = true;\\r\\n            this.Show();\\r\\n        }\\r\\n    }\\r\\n    OnTriggerExit(collider)
+    {\\r\\n        console.log(\\\"[OnTriggerExit]\\\");\\r\\n        if (this.isShow)
+    {\\r\\n            if (collider.tag == \\\"Player\\\") {\\r\\n               
+    this.Hide();\\r\\n                this.isShow = false;\\r\\n            }\\r\\n       
+    }\\r\\n    }\\r\\n    Show() {\\r\\n        UIManager_1.default.Instance.ShowIcon(this);\\r\\n   
+    }\\r\\n    Hide() {\\r\\n        UIManager_1.default.Instance.HideIcon(this);\\r\\n   
+    }\\r\\n}\\r\\nexports.default = IconTrigger;\\r\\n//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiSWNvblRyaWdnZXIuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyJJY29uVHJpZ2dlci50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOztBQUFBLDZDQUF1RztBQUN2RyxpREFBc0Q7QUFDdEQsd0RBQWlEO0FBSWpELE1BQXFCLFdBQVksU0FBUSxxQ0FBcUI7SUFBOUQ7O1FBVVcsa0JBQWEsR0FBYSxLQUFLLENBQUM7UUFDaEMsZUFBVSxHQUFZLENBQUMsQ0FBQztRQUN4QixnQkFBVyxHQUFhLElBQUkscUJBQU8sQ0FBQyxDQUFDLEVBQUUsRUFBRSxDQUFDLENBQUM7UUFFM0MsV0FBTSxHQUFhLElBQUksQ0FBQztRQUV2QixXQUFNLEdBQWEsS0FBSyxDQUFDO0lBMENyQyxDQUFDO0lBeENHLEtBQUs7UUFDRCxtQkFBUyxDQUFDLFFBQVEsQ0FBQyxtQkFBbUIsQ0FBQyxJQUFJLENBQUMsQ0FBQztJQUNqRCxDQUFDO0lBRUQsY0FBYyxDQUFDLFFBQWtCO1FBQzdCLE9BQU8sQ0FBQyxHQUFHLENBQUMsa0JBQWtCLEVBQUUsUUFBUSxDQUFDLEdBQUcsQ0FBQyxDQUFDO1FBQzlDLElBQUksUUFBUSxDQUFDLEdBQUcsSUFBSSxRQUFRLEVBQUU7WUFDMUIsSUFBRyxJQUFJLENBQUMsTUFBTSxFQUFDO2dCQUNYLElBQUksT0FBTyxHQUFHLE1BQU0sQ0FBQyxJQUFJLENBQUMsT0FBTyxDQUFDLENBQUM7Z0JBQ25DLElBQUcsbUJBQVMsQ0FBQyxRQUFRLENBQUMsb0JBQW9CLENBQUMsT0FBTyxDQUFDLEVBQ25EO29CQUNJLG9CQUFvQjtvQkFDcEIsT0FBUTtpQkFDWDthQUNKO1lBRUQsSUFBSSxDQUFDLE1BQU0sR0FBRyxJQUFJLENBQUM7WUFDbkIsSUFBSSxDQUFDLElBQUksRUFBRSxDQUFDO1NBQ2Y7SUFDTCxDQUFDO0lBRUQsYUFBYSxDQUFDLFFBQWtCO1FBQzVCLE9BQU8sQ0FBQyxHQUFHLENBQUMsaUJBQWlCLENBQUMsQ0FBQztRQUMvQixJQUFHLElBQUksQ0FBQyxNQUFNLEVBQUM7WUFDWCxJQUFJLFFBQVEsQ0FBQyxHQUFHLElBQUksUUFBUSxFQUFFO2dCQUMxQixJQUFJLENBQUMsSUFBSSxFQUFFLENBQUM7Z0JBQ1osSUFBSSxDQUFDLE1BQU0sR0FBRyxLQUFLLENBQUM7YUFDdkI7U0FDSjtJQUVMLENBQUM7SUFFTyxJQUFJO1FBQ1IsbUJBQVMsQ0FBQyxRQUFRLENBQUMsUUFBUSxDQUFDLElBQUksQ0FBQyxDQUFDO0lBQ3RDLENBQUM7SUFFTyxJQUFJO1FBQ1IsbUJBQVMsQ0FBQyxRQUFRLENBQUMsUUFBUSxDQUFDLElBQUksQ0FBQyxDQUFDO0lBQ3RDLENBQUM7Q0FFSjtBQTFERCw4QkEwREMifQ==\",\"assetPath\":\"Assets/Script/UI/IconTrigger.ts\",\"manifest\":{\"properties\":[{\"assembly\":\"UnityEngine.CoreModule\",\"name\":\"offset\",\"type\":\"UnityEngine.Vector3\",\"isArray\":false,\"initValue\":[],\"enumKeys\":[],\"enumValues\":[],\"attributes\":[]},{\"assembly\":\"UnityEngine.CoreModule\",\"name\":\"uiScale\",\"type\":\"UnityEngine.Vector3\",\"isArray\":false,\"initValue\":[],\"enumKeys\":[],\"enumValues\":[],\"attributes\":[]},{\"assembly\":\"UnityEngine.CoreModule\",\"name\":\"icon\",\"type\":\"UnityEngine.Sprite\",\"isArray\":false,\"initValue\":[],\"enumKeys\":[],\"enumValues\":[],\"attributes\":[]},{\"assembly\":\"\",\"name\":\"eventId\",\"type\":\"UIEventCustom\",\"isArray\":false,\"initValue\":[],\"enumKeys\":[\"None\",\"SetGesture_GQ\"],\"enumValues\":[\"0\",\"1\"],\"attributes\":[]},{\"assembly\":\"UnityEngine.CoreModule\",\"name\":\"targetObj\",\"type\":\"UnityEngine.GameObject\",\"isArray\":false,\"initValue\":[],\"enumKeys\":[],\"enumValues\":[],\"attributes\":[]},{\"assembly\":\"UnityEngine.AnimationModule\",\"name\":\"animationClip\",\"type\":\"UnityEngine.AnimationClip\",\"isArray\":false,\"initValue\":[],\"enumKeys\":[],\"enumValues\":[],\"attributes\":[{\"name\":\"Header\",\"args\":[\"\\\"-----------Gesture-----------\\\"\"]}]},{\"assembly\":\"mscorlib\",\"name\":\"useViewChange\",\"type\":\"System.Boolean\",\"isArray\":false,\"initValue\":[],\"enumKeys\":[],\"enumValues\":[],\"attributes\":[]},{\"assembly\":\"mscorlib\",\"name\":\"cameraZoom\",\"type\":\"System.Single\",\"isArray\":false,\"initValue\":[\"1\"],\"enumKeys\":[],\"enumValues\":[],\"attributes\":[]},{\"assembly\":\"UnityEngine.CoreModule\",\"name\":\"cameraAngle\",\"type\":\"UnityEngine.Vector2\",\"isArray\":false,\"initValue\":[],\"enumKeys\":[],\"enumValues\":[],\"attributes\":[]},{\"assembly\":\"UnityEngine.CoreModule\",\"name\":\"targetTransform\",\"type\":\"UnityEngine.Transform\",\"isArray\":false,\"initValue\":[],\"enumKeys\":[],\"enumValues\":[],\"attributes\":[]},{\"assembly\":\"mscorlib\",\"name\":\"isLock\",\"type\":\"System.Boolean\",\"isArray\":false,\"initValue\":[],\"enumKeys\":[],\"enumValues\":[],\"attributes\":[]}],\"name\":\"IconTrigger\",\"description\":\"\"},\"isCompiled\":true}"
+  typescriptHash: a716b24941d5b864753afe87df357505

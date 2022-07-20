@@ -1,0 +1,74 @@
+fileFormatVersion: 2
+guid: fc41fd92122435c43891b7d00103e138
+importerOverride: ZEPETO.Script.Compiler:ZEPETO.Script:TypescriptAssetImporter
+ScriptedImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 2
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+  script: {fileID: -1123457745, guid: 54cf806323ffe4418a4ce4cc63fe6b9d, type: 3}
+  isAssemblyDeclarations: 0
+  assembly: 
+  generateAllTypes: 1
+  types: []
+  generateWrapper: 0
+  overrideWrapperTypes: 0
+  wrapperTypes: []
+  WrapperFilters: []
+  wrapperOutputDirectory: Generated
+  compiledResult: "{\"source\":\"\\\"use strict\\\";\\r\\nObject.defineProperty(exports,
+    \\\"__esModule\\\", { value: true });\\r\\nconst UnityEngine_1 = require(\\\"UnityEngine\\\");\\r\\nconst
+    ZEPETO_Script_1 = require(\\\"ZEPETO.Script\\\");\\r\\nconst UnityEngine_UI_1
+    = require(\\\"UnityEngine.UI\\\");\\r\\nconst UnityEngine_2 = require(\\\"UnityEngine\\\");\\r\\nconst
+    IconTrigger_1 = require(\\\"./IconTrigger\\\");\\r\\nconst UIManager_1 = require(\\\"../GameManager/UIManager\\\");\\r\\nclass
+    IconItemUI extends ZEPETO_Script_1.ZepetoScriptBehaviour {\\r\\n    constructor()
+    {\\r\\n        super(...arguments);\\r\\n        this.mEuler = UnityEngine_1.Vector3.zero;\\r\\n   
+    }\\r\\n    Awake() {\\r\\n        if (this.mBtn == null)\\r\\n            this.mBtn
+    = this.gameObject.GetComponent($typeof(UnityEngine_UI_1.Button));\\r\\n       
+    if (this.mImg == null)\\r\\n            this.mImg = this.gameObject.GetComponent($typeof(UnityEngine_UI_1.Image));\\r\\n       
+    this.mInitialRotation = this.transform.rotation;\\r\\n    }\\r\\n    OnEnable()
+    {\\r\\n        if (this.mBtn) {\\r\\n            this.mBtn.onClick.AddListener(this.ClickBtn.bind(this));\\r\\n       
+    }\\r\\n        this.mUpdateUICoroutine = this.StartCoroutine(this.UpdateUI());\\r\\n   
+    }\\r\\n    // \u4FEE\u6539\u4E3A\u76D1\u542C\\r\\n    //todo\\r\\n    *UpdateUI()
+    {\\r\\n        while (true) {\\r\\n            if (UnityEngine_1.Camera.main)
+    {\\r\\n                let cam = UnityEngine_1.Camera.main;\\r\\n               
+    this.mEuler.x = cam.transform.eulerAngles.x;\\r\\n                this.mEuler.y
+    = cam.transform.eulerAngles.y;\\r\\n                this.transform.localEulerAngles
+    = this.mEuler;\\r\\n            }\\r\\n            yield new UnityEngine_2.WaitForSeconds(0.1);\\r\\n       
+    }\\r\\n    }\\r\\n    OnDisable() {\\r\\n        if (this.mBtn) {\\r\\n           
+    this.mBtn.onClick.RemoveAllListeners();\\r\\n        }\\r\\n        if (this.mUpdateUICoroutine
+    != null || this.mUpdateUICoroutine != undefined) {\\r\\n            this.StopCoroutine(this.mUpdateUICoroutine);\\r\\n           
+    console.log(\\\"Stop Coroutine\\\");\\r\\n        }\\r\\n    }\\r\\n    SetData(owner)
+    {\\r\\n        this.mOwner = owner;\\r\\n        this.mOffset = owner.offset;\\r\\n       
+    this.gameObject.name = \\\"IconItemUI_\\\" + owner.eventId;\\r\\n        if (owner.icon
+    != null)\\r\\n            this.mImg.sprite = owner.icon;\\r\\n        this.transform.localScale
+    = owner.uiScale;\\r\\n        this.transform.localPosition = UnityEngine_1.Vector3.op_Addition(owner.transform.position,
+    owner.offset);\\r\\n    }\\r\\n    ClickBtn() {\\r\\n        UIManager_1.default.Instance.ClickIcon(this.mOwner);\\r\\n   
+    }\\r\\n    OffIcon() {\\r\\n        this.mImg.raycastTarget = false;\\r\\n       
+    this.mImg.color = new UnityEngine_1.Color(1, 1, 1, 0);\\r\\n    }\\r\\n    Hide()
+    {\\r\\n        this.OnShow(false);\\r\\n    }\\r\\n    Show() {\\r\\n       
+    this.OnShow(true);\\r\\n    }\\r\\n    OnShow(isShow) {\\r\\n        if (isShow)
+    {\\r\\n            this.mImg.raycastTarget = true;\\r\\n            if (this.mHideIconCoroutine
+    != null || this.mHideIconCoroutine != undefined)\\r\\n                this.StopCoroutine(this.mHideIconCoroutine);\\r\\n           
+    this.mShowIconCoroutine = this.StartCoroutine(this.CoShowIcon());\\r\\n       
+    }\\r\\n        else {\\r\\n            this.mImg.raycastTarget = false;\\r\\n           
+    if (this.mShowIconCoroutine != null || this.mShowIconCoroutine != undefined)\\r\\n               
+    this.StopCoroutine(this.mShowIconCoroutine);\\r\\n            this.mHideIconCoroutine
+    = this.StartCoroutine(this.CoHideIcon());\\r\\n        }\\r\\n    }\\r\\n   
+    //\u56FE\u6807\u6E10\u663E\\r\\n    *CoShowIcon() {\\r\\n        let timeElapsed
+    = 0;\\r\\n        let timeMax = 0.2;\\r\\n        while (true) {\\r\\n           
+    timeElapsed += UnityEngine_1.Time.deltaTime;\\r\\n            let alpha = UnityEngine_1.Mathf.Lerp(0,
+    1, timeElapsed / timeMax);\\r\\n            this.mImg.color = new UnityEngine_1.Color(1,
+    1, 1, alpha);\\r\\n            if (alpha == 1) {\\r\\n                break;\\r\\n           
+    }\\r\\n            yield UnityEngine_1.WaitForEndOfFrame;\\r\\n        }\\r\\n   
+    }\\r\\n    //\u56FE\u6807\u6E10\u9690\\r\\n    *CoHideIcon() {\\r\\n        if
+    (this.mImg.color.a == 0)\\r\\n            return;\\r\\n        let timeElapsed
+    = 0;\\r\\n        let timeMax = 0.3;\\r\\n        while (true) {\\r\\n           
+    timeElapsed += UnityEngine_1.Time.deltaTime;\\r\\n            let alpha = UnityEngine_1.Mathf.Lerp(1,
+    0, timeElapsed / timeMax);\\r\\n            this.mImg.color = new UnityEngine_1.Color(1,
+    1, 1, alpha);\\r\\n            if (alpha == 0) {\\r\\n                break;\\r\\n           
+    }\\r\\n            yield UnityEngine_1.WaitForEndOfFrame;\\r\\n        }\\r\\n   
+    }\\r\\n}\\r\\nexports.default = IconItemUI;\\r\\n//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiSWNvbkl0ZW1VSS5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIkljb25JdGVtVUkudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7QUFBQSw2Q0FBd0g7QUFDeEgsaURBQXFEO0FBQ3JELG1EQUErQztBQUMvQyw2Q0FBNkM7QUFDN0MsK0NBQXdDO0FBQ3hDLHdEQUFpRDtBQUVqRCxNQUFxQixVQUFXLFNBQVEscUNBQXFCO0lBQTdEOztRQWFhLFdBQU0sR0FBYSxxQkFBTyxDQUFDLElBQUksQ0FBQztJQWlIN0MsQ0FBQztJQS9HRyxLQUFLO1FBQ0QsSUFBSSxJQUFJLENBQUMsSUFBSSxJQUFJLElBQUk7WUFBRSxJQUFJLENBQUMsSUFBSSxHQUFHLElBQUksQ0FBQyxVQUFVLENBQUMsWUFBWSxTQUFDLHVCQUFNLEVBQUcsQ0FBQztRQUMxRSxJQUFJLElBQUksQ0FBQyxJQUFJLElBQUksSUFBSTtZQUFFLElBQUksQ0FBQyxJQUFJLEdBQUcsSUFBSSxDQUFDLFVBQVUsQ0FBQyxZQUFZLFNBQUMsc0JBQUssRUFBRyxDQUFDO1FBQ3pFLElBQUksQ0FBQyxnQkFBZ0IsR0FBRyxJQUFJLENBQUMsU0FBUyxDQUFDLFFBQVEsQ0FBQztJQUNwRCxDQUFDO0lBRUQsUUFBUTtRQUNKLElBQUksSUFBSSxDQUFDLElBQUksRUFBRTtZQUNYLElBQUksQ0FBQyxJQUFJLENBQUMsT0FBTyxDQUFDLFdBQVcsQ0FBQyxJQUFJLENBQUMsUUFBUSxDQUFDLElBQUksQ0FBQyxJQUFJLENBQUMsQ0FBQyxDQUFDO1NBQzNEO1FBQ0QsSUFBSSxDQUFDLGtCQUFrQixHQUFHLElBQUksQ0FBQyxjQUFjLENBQUMsSUFBSSxDQUFDLFFBQVEsRUFBRSxDQUFDLENBQUM7SUFDbkUsQ0FBQztJQUVELFFBQVE7SUFDUixNQUFNO0lBQ0UsQ0FBQyxRQUFRO1FBQ2IsT0FBTyxJQUFJLEVBQUU7WUFDVCxJQUFJLG9CQUFNLENBQUMsSUFBSSxFQUFFO2dCQUNiLElBQUksR0FBRyxHQUFHLG9CQUFNLENBQUMsSUFBSSxDQUFDO2dCQUN0QixJQUFJLENBQUMsTUFBTSxDQUFDLENBQUMsR0FBRyxHQUFHLENBQUMsU0FBUyxDQUFDLFdBQVcsQ0FBQyxDQUFDLENBQUM7Z0JBQzVDLElBQUksQ0FBQyxNQUFNLENBQUMsQ0FBQyxHQUFHLEdBQUcsQ0FBQyxTQUFTLENBQUMsV0FBVyxDQUFDLENBQUMsQ0FBQztnQkFDNUMsSUFBSSxDQUFDLFNBQVMsQ0FBQyxnQkFBZ0IsR0FBRyxJQUFJLENBQUMsTUFBTSxDQUFDO2FBQ2pEO1lBQ0QsTUFBTSxJQUFJLDRCQUFjLENBQUMsR0FBRyxDQUFDLENBQUM7U0FDakM7SUFDTCxDQUFDO0lBRUQsU0FBUztRQUNMLElBQUksSUFBSSxDQUFDLElBQUksRUFBRTtZQUNYLElBQUksQ0FBQyxJQUFJLENBQUMsT0FBTyxDQUFDLGtCQUFrQixFQUFFLENBQUM7U0FDMUM7UUFDRCxJQUFJLElBQUksQ0FBQyxrQkFBa0IsSUFBSSxJQUFJLElBQUksSUFBSSxDQUFDLGtCQUFrQixJQUFJLFNBQVMsRUFBQztZQUN4RSxJQUFJLENBQUMsYUFBYSxDQUFDLElBQUksQ0FBQyxrQkFBa0IsQ0FBQyxDQUFDO1lBQzVDLE9BQU8sQ0FBQyxHQUFHLENBQUMsZ0JBQWdCLENBQUMsQ0FBQztTQUNqQztJQUVMLENBQUM7SUFFTSxPQUFPLENBQUMsS0FBa0I7UUFDN0IsSUFBSSxDQUFDLE1BQU0sR0FBRyxLQUFLLENBQUM7UUFDcEIsSUFBSSxDQUFDLE9BQU8sR0FBRyxLQUFLLENBQUMsTUFBTSxDQUFDO1FBQzVCLElBQUksQ0FBQyxVQUFVLENBQUMsSUFBSSxHQUFHLGFBQWEsR0FBRyxLQUFLLENBQUMsT0FBTyxDQUFDO1FBQ3JELElBQUksS0FBSyxDQUFDLElBQUksSUFBSSxJQUFJO1lBQUUsSUFBSSxDQUFDLElBQUksQ0FBQyxNQUFNLEdBQUcsS0FBSyxDQUFDLElBQUksQ0FBQztRQUN0RCxJQUFJLENBQUMsU0FBUyxDQUFDLFVBQVUsR0FBRyxLQUFLLENBQUMsT0FBTyxDQUFDO1FBQzFDLElBQUksQ0FBQyxTQUFTLENBQUMsYUFBYSxHQWxFb0MscUJBQU8sQ0FxSTBpakIsV0FBWSxDQW5FOWxqQixLQUFLLENBQUMsU0FBUyxDQUFDLFFBQVEsRUFBRyxLQUFLLENBQUMsTUFBTSxDQUFBLENBQUM7SUFDM0UsQ0FBQztJQUVPLFFBQVE7UUFDWixtQkFBUyxDQUFDLFFBQVEsQ0FBQyxTQUFTLENBQUMsSUFBSSxDQUFDLE1BQU0sQ0FBQyxDQUFDO0lBQzlDLENBQUM7SUFFRCxPQUFPO1FBQ0gsSUFBSSxDQUFDLElBQUksQ0FBQyxhQUFhLEdBQUcsS0FBSyxDQUFDO1FBQ2hDLElBQUksQ0FBQyxJQUFJLENBQUMsS0FBSyxHQUFHLElBQUksbUJBQUssQ0FBQyxDQUFDLEVBQUUsQ0FBQyxFQUFFLENBQUMsRUFBRSxDQUFDLENBQUMsQ0FBQztJQUM1QyxDQUFDO0lBRUQsSUFBSTtRQUNBLElBQUksQ0FBQyxNQUFNLENBQUMsS0FBSyxDQUFDLENBQUM7SUFDdkIsQ0FBQztJQUVELElBQUk7UUFDQSxJQUFJLENBQUMsTUFBTSxDQUFDLElBQUksQ0FBQyxDQUFDO0lBQ3RCLENBQUM7SUFFTyxNQUFNLENBQUMsTUFBWTtRQUN2QixJQUFJLE1BQU0sRUFBRTtZQUNSLElBQUksQ0FBQyxJQUFJLENBQUMsYUFBYSxHQUFHLElBQUksQ0FBQztZQUUvQixJQUFJLElBQUksQ0FBQyxrQkFBa0IsSUFBSSxJQUFJLElBQUksSUFBSSxDQUFDLGtCQUFrQixJQUFJLFNBQVM7Z0JBQ3ZFLElBQUksQ0FBQyxhQUFhLENBQUMsSUFBSSxDQUFDLGtCQUFrQixDQUFDLENBQUM7WUFFaEQsSUFBSSxDQUFDLGtCQUFrQixHQUFHLElBQUksQ0FBQyxjQUFjLENBQUMsSUFBSSxDQUFDLFVBQVUsRUFBRSxDQUFDLENBQUM7U0FDcEU7YUFBTTtZQUNILElBQUksQ0FBQyxJQUFJLENBQUMsYUFBYSxHQUFHLEtBQUssQ0FBQztZQUNoQyxJQUFJLElBQUksQ0FBQyxrQkFBa0IsSUFBSSxJQUFJLElBQUksSUFBSSxDQUFDLGtCQUFrQixJQUFJLFNBQVM7Z0JBQ3ZFLElBQUksQ0FBQyxhQUFhLENBQUMsSUFBSSxDQUFDLGtCQUFrQixDQUFDLENBQUM7WUFDaEQsSUFBSSxDQUFDLGtCQUFrQixHQUFHLElBQUksQ0FBQyxjQUFjLENBQUMsSUFBSSxDQUFDLFVBQVUsRUFBRSxDQUFDLENBQUM7U0FDcEU7SUFDTCxDQUFDO0lBRUQsTUFBTTtJQUNFLENBQUMsVUFBVTtRQUNmLElBQUksV0FBVyxHQUFHLENBQUMsQ0FBQztRQUNwQixJQUFJLE9BQU8sR0FBRyxHQUFHLENBQUM7UUFDbEIsT0FBTyxJQUFJLEVBQUU7WUFDVCxXQUFXLElBQUksa0JBQUksQ0FBQyxTQUFTLENBQUM7WUFDOUIsSUFBSSxLQUFLLEdBQUcsbUJBQUssQ0FBQyxJQUFJLENBQUMsQ0FBQyxFQUFFLENBQUMsRUFBRSxXQUFXLEdBQUcsT0FBTyxDQUFDLENBQUM7WUFDcEQsSUFBSSxDQUFDLElBQUksQ0FBQyxLQUFLLEdBQUcsSUFBSSxtQkFBSyxDQUFDLENBQUMsRUFBRSxDQUFDLEVBQUUsQ0FBQyxFQUFFLEtBQUssQ0FBQyxDQUFDO1lBQzVDLElBQUksS0FBSyxJQUFJLENBQUMsRUFBRTtnQkFDWixNQUFNO2FBQ1Q7WUFDRCxNQUFNLCtCQUFpQixDQUFDO1NBQzNCO0lBQ0wsQ0FBQztJQUVELE1BQU07SUFDRSxDQUFDLFVBQVU7UUFDZixJQUFJLElBQUksQ0FBQyxJQUFJLENBQUMsS0FBSyxDQUFDLENBQUMsSUFBSSxDQUFDO1lBQUUsT0FBTztRQUNuQyxJQUFJLFdBQVcsR0FBRyxDQUFDLENBQUM7UUFDcEIsSUFBSSxPQUFPLEdBQUcsR0FBRyxDQUFDO1FBQ2xCLE9BQU8sSUFBSSxFQUFFO1lBQ1QsV0FBVyxJQUFJLGtCQUFJLENBQUMsU0FBUyxDQUFDO1lBQzlCLElBQUksS0FBSyxHQUFHLG1CQUFLLENBQUMsSUFBSSxDQUFDLENBQUMsRUFBRSxDQUFDLEVBQUUsV0FBVyxHQUFHLE9BQU8sQ0FBQyxDQUFDO1lBQ3BELElBQUksQ0FBQyxJQUFJLENBQUMsS0FBSyxHQUFHLElBQUksbUJBQUssQ0FBQyxDQUFDLEVBQUUsQ0FBQyxFQUFFLENBQUMsRUFBRSxLQUFLLENBQUMsQ0FBQztZQUM1QyxJQUFJLEtBQUssSUFBSSxDQUFDLEVBQUU7Z0JBQ1osTUFBTTthQUNUO1lBQ0QsTUFBTSwrQkFBaUIsQ0FBQztTQUMzQjtJQUNMLENBQUM7Q0FFSjtBQTlIRCw2QkE4SEMifQ==\",\"assetPath\":\"Assets/Script/UI/IconItemUI.ts\",\"manifest\":{\"properties\":[{\"assembly\":\"UnityEngine.UI\",\"name\":\"mBtn\",\"type\":\"UnityEngine.UI.Button\",\"isArray\":false,\"initValue\":[],\"enumKeys\":[],\"enumValues\":[],\"attributes\":[]},{\"assembly\":\"UnityEngine.UI\",\"name\":\"mImg\",\"type\":\"UnityEngine.UI.Image\",\"isArray\":false,\"initValue\":[],\"enumKeys\":[],\"enumValues\":[],\"attributes\":[]}],\"name\":\"IconItemUI\",\"description\":\"\"},\"isCompiled\":true}"
+  typescriptHash: b84c10e21c4e93b7cf405850b02070c6
