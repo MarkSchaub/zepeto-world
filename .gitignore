@@ -58,31 +58,18 @@ sysinfo.txt
 # Crashlytics generated file
 crashlytics-build.properties
 
-# Builds
-*.apk
-*.unitypackage
 .idea
-.vscode
 [Dd]eploy*/
 
-# Samples
-# /[Aa]ssets/Samples*
-/[Uu]serSettings/
-/[Nn]ode_modules
+# OSX
+*.DS_Store
 
-Assets/_Temp
-Assets/_Temp.meta
+# VS CODE
+.vscode
 
-*.patch
+# NODE
+node_modules/
 
-.DS_Store
-
-# Packages
-package.json
 package-lock.json
-
-Packages/manifest.json
-Packages/package-lock.json
+tsconfig.json
 Packages/packages-lock.json
-
-BuildLogs/
