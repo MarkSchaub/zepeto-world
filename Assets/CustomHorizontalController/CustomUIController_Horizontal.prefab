@@ -327,7 +327,6 @@ GameObject:
   - component: {fileID: 5628943215613295668}
   - component: {fileID: 5628943215613295669}
   - component: {fileID: 5628943215613295666}
-  - component: {fileID: 8140008671196344377}
   m_Layer: 5
   m_Name: Jump
   m_TagString: Untagged
@@ -437,37 +436,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &8140008671196344377
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5628943215613295664}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -2098354695, guid: d328479d06a874cd1bda7a86f9cdd3a9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  OnPointDownEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 970442940030058164}
-        m_TargetAssemblyTypeName: ZEPETO.Character.Controller.UIZepetoPlayerControl,
-          ZEPETO.Character.Controller
-        m_MethodName: Jump
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  OnPointUpEvent:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1 &6432160241001380078
 GameObject:
   m_ObjectHideFlags: 0
@@ -560,22 +528,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   script:
     keys:
+    - jumpBtn
+    - isAutoHideInMobile
+    - rotatorGO
     - isUsingRotatorGO
     - stickMaximumDistance
-    - isAutoHideInMobile
     - UIZepetoPlayerControlObject
-    - rotatorGO
     unityValues:
+    - {fileID: 5628943215613295668}
+    - {fileID: 0}
     - {fileID: 0}
     - {fileID: 0}
     - {fileID: 0}
     - {fileID: 970442940030058164}
-    - {fileID: 0}
     values:
-    - '{"type":"System.Boolean, mscorlib","value":"False"}'
-    - '{"type":"System.Single, mscorlib","value":"80"}'
+    - 
     - '{"type":"System.Boolean, mscorlib","value":"False"}'
     - 
+    - '{"type":"System.Boolean, mscorlib","value":"False"}'
+    - '{"type":"System.Single, mscorlib","value":"90"}'
     - 
     unityArrayValues: []
     arrayValues: []

@@ -2,9 +2,10 @@ import { AnimationCurve, CanvasGroup, Coroutine, GameObject, Input, Mathf, Opera
 import { EventSystem, EventTrigger, EventTriggerType, PointerEventData } from 'UnityEngine.EventSystems'
 import { Entry } from 'UnityEngine.EventSystems.EventTrigger';
 import { System } from 'UnityEngine.Rendering.VirtualTexturing';
-import { Image } from 'UnityEngine.UI';
-import { UIZepetoPlayerControl } from 'ZEPETO.Character.Controller';
+import { Image, Button } from 'UnityEngine.UI';
+import {CharacterState, UIZepetoPlayerControl} from 'ZEPETO.Character.Controller';
 import { ZepetoScriptBehaviour } from 'ZEPETO.Script'
+import PlayerManager from '../GameManager/PlayerManager'
 
 export default class CustomScreenStick extends ZepetoScriptBehaviour {
 
@@ -19,6 +20,9 @@ export default class CustomScreenStick extends ZepetoScriptBehaviour {
     @Header("---- Other Settings ----")
     public isAutoHideInMobile: boolean;
 
+    @Header("---- Jump ----")
+    public jumpBtn : Button;
+    
     private _rotatorRectTransform: RectTransform;
 
     private _eventTrigger: EventTrigger;
@@ -35,6 +39,10 @@ export default class CustomScreenStick extends ZepetoScriptBehaviour {
     private _isOnEditor;
 
     private _isInitialized;
+    
+    private _preMoveDir : Vector2 = Vector2.zero;
+    private _minDis = 0.025;
+    private _frameCount : number = 0;
 
     Start() {
         if ((SystemInfo.operatingSystemFamily == OperatingSystemFamily.MacOSX) || (SystemInfo.operatingSystemFamily == OperatingSystemFamily.Windows)) {
@@ -61,16 +69,16 @@ export default class CustomScreenStick extends ZepetoScriptBehaviour {
             this._rotatorRectTransform = this.rotatorGO.GetComponent<RectTransform>();
             this.rotatorGO.SetActive(false);
         }
-
-
-
+        if(this.jumpBtn){
+            this.jumpBtn.onClick.AddListener(()=>{
+                this.Jump();
+            })
+        }
 
         //Register Point Down
         let _pointerDownEntry = new Entry();
         _pointerDownEntry.eventID = EventTriggerType.PointerDown;
         _pointerDownEntry.callback.AddListener(() => {
-            this.UIZepetoPlayerControlObject.StartMoving();
-
             if (this.isUsingRotatorGO) {
                 this.rotatorGO.SetActive(true);
             }
@@ -79,6 +87,9 @@ export default class CustomScreenStick extends ZepetoScriptBehaviour {
 
             if (this.isAutoHideInMobile)
                 this._controllerCanvasGroup.alpha = 1;
+
+            //this.UIZepetoPlayerControlObject.StartMoving();
+            PlayerManager.Instance.OnDragBegin(); 
         })
         this._eventTrigger.triggers.Add(_pointerDownEntry);
 
@@ -102,7 +113,15 @@ export default class CustomScreenStick extends ZepetoScriptBehaviour {
             }
 
             this._isDragging = true;
-            this.UIZepetoPlayerControlObject.Move(_vector2Adjusted);
+            let _dis = Vector2.Distance(this._preMoveDir, _vector2Adjusted);
+            this._frameCount += 1;
+            if(_dis > this._minDis || this._frameCount > 6){
+                PlayerManager.Instance.OnDragMove(_vector2Adjusted);
+                this._preMoveDir = _vector2Adjusted;
+                this._frameCount = 0;
+            }
+            //this.UIZepetoPlayerControlObject.Move(_vector2Adjusted);
+          
         })
         this._eventTrigger.triggers.Add(_dragEntry);
 
@@ -110,7 +129,6 @@ export default class CustomScreenStick extends ZepetoScriptBehaviour {
         let _dragEndEntry = new Entry();
         _dragEndEntry.eventID = EventTriggerType.EndDrag;
         _dragEndEntry.callback.AddListener((eventData: PointerEventData) => {
-            this.UIZepetoPlayerControlObject.StopMoving();
             this._rectTransform.anchoredPosition = this._startPosition;
 
             if (this.isUsingRotatorGO) {
@@ -121,6 +139,8 @@ export default class CustomScreenStick extends ZepetoScriptBehaviour {
 
             if (this.isAutoHideInMobile)
                 this._controllerCanvasGroup.alpha = 0;
+            //this.UIZepetoPlayerControlObject.StopMoving();
+            PlayerManager.Instance.OnDragEnd();
         })
         this._eventTrigger.triggers.Add(_dragEndEntry);
 
@@ -158,6 +178,12 @@ export default class CustomScreenStick extends ZepetoScriptBehaviour {
         } else {
             return Mathf.Atan2(input.x, input.y) * Mathf.Rad2Deg;
         }
+    }
+    
+    Jump(){
+        console.error("Jump!");
+        //this.UIZepetoPlayerControlObject.Jump();
+        PlayerManager.Instance.SyncLocalPlayerState(CharacterState.Jump);
     }
 
 }

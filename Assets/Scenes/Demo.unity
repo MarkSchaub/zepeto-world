@@ -705,8 +705,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1502474283}
   - component: {fileID: 1502474282}
+  - component: {fileID: 1502474284}
   m_Layer: 0
-  m_Name: UnderseaWorld
+  m_Name: WorldName
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -750,6 +751,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1502474284
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1502474281}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c2b64bbca5f589468b1a79a75bfa70b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1714331821
 GameObject:
   m_ObjectHideFlags: 0
@@ -951,7 +964,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1879470657}
   - component: {fileID: 1879470658}
-  - component: {fileID: 1879470659}
   m_Layer: 0
   m_Name: ZepetoPlayersPrefab
   m_TagString: Untagged
@@ -1084,26 +1096,6 @@ MonoBehaviour:
   OnRemovedPlayer:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &1879470659
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1879470656}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1673316429, guid: 921f0445823004a16a499d629dd566a6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  script:
-    keys: []
-    unityValues: []
-    values: []
-    unityArrayValues: []
-    arrayValues: []
-    script: {fileID: 4458252877524076426, guid: ae83b5e14ef2244088b904f465032a6c, type: 3}
-    isExpaned: 0
 --- !u!1 &1921077212
 GameObject:
   m_ObjectHideFlags: 0

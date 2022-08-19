@@ -6,7 +6,8 @@ import {
     ZepetoCamera,
     ZepetoCharacter,
     ZepetoPlayer,
-    ZepetoPlayers
+    ZepetoPlayers,
+    UIZepetoPlayerControl
 } from 'ZEPETO.Character.Controller';
 import {
     AnimationClip,
@@ -18,6 +19,7 @@ import {
     Time,
     Transform,
     Vector3,
+    Vector2,
     WaitForSeconds
 } from "UnityEngine";
 import {sPlayer, sPlayerInfo, sVector3} from "ZEPETO.Multiplay.Schema";
@@ -25,6 +27,14 @@ import {sEventArg} from "./NetManager"
 import {RoomData} from "ZEPETO.Multiplay";
 import CameraController from '../GameController/CameraController'
 import BaseManager from './BaseManager'
+
+
+enum MoveState{
+    DragEnd = 0,
+    DragBegin = 1,
+    DragMove = 2
+}
+
 
 export default class PlayerManager extends BaseManager {
 
@@ -38,14 +48,14 @@ export default class PlayerManager extends BaseManager {
     /* Player Map */
     private mUserIdMap : Map<number, sPlayerInfo> = new Map<number, sPlayerInfo>();
     private mPlayerSessionMap : Map<string, sPlayer> = new Map<string, sPlayer>();
-    
+    private mPlayer : sPlayer;
     private mSessionId : string;
     private mLocalPlayer : ZepetoPlayer;
     private mLocalCamera : ZepetoCamera;
-    private mLocalPlayerTransform;
+    private mLocalPlayerTransform : Transform;
     private mIsUpdate : boolean;   
     private mPrePos : Vector3;
-    private mMaxMoveDistance : number;
+    private mMaxMoveDistance : number = 2;
 
     private mPreCameraAngle : Quaternion;
     private mPreCameraPos : Vector3;
@@ -56,9 +66,15 @@ export default class PlayerManager extends BaseManager {
     private mCameraCtrl : CameraController;
     
     /* sync setting */
-    private mFPS : number = 30;
+    private mFPS : number = 60;
     private mInterval : number = 1 / this.mFPS;
-    private mTimer : number = 0;
+    private mKeepMoveInterval : number = 0.5; // 持续某个方向移动，每隔0.5秒同步一次
+    private mMoveTimer : number = 0;
+    private mMoveDir : Vector2;
+    private mMoveState : MoveState = MoveState.DragEnd;
+    
+    /* 服务器同步玩家操作 */
+    private mUIZepetoPlayerCtrl : UIZepetoPlayerControl; 
 
     Awake() {
         PlayerManager._instance = this;
@@ -67,36 +83,38 @@ export default class PlayerManager extends BaseManager {
     
     Start() {
         
-        ZepetoPlayers.instance.OnAddedLocalPlayer.AddListener(() => {
+        ZepetoPlayers.instance.OnAddedLocalPlayer.AddListener(()=>{
             this.mLocalPlayer = ZepetoPlayers.instance.LocalPlayer.zepetoPlayer;
             this.mLocalCamera = ZepetoPlayers.instance.LocalPlayer.zepetoCamera;
             this.mLocalCamera.camera.gameObject.tag = "MainCamera";
             this.mLocalPlayerTransform = this.mLocalPlayer.character.transform;
             this.mCameraCtrl.InitCamera();
             this.mLocalPlayer.character.gameObject.tag = "Player";
-            this.mMaxMoveDistance = this.mLocalPlayer.character.RunSpeed * this.mLocalPlayer.character.RunSpeed;
-            
-                // todo
-            this.mLocalPlayer.character.OnChangedState.AddListener((cur, prev) =>{
-                this.SyncLocalPlayerState(cur);
-            })
+            this.mPlayer = this.mPlayerSessionMap.get(this.mSessionId);
         });
-
+        
+        
         ZepetoPlayers.instance.OnAddedPlayer.AddListener((sessionId: string) => {
-            if (this.mSessionId == sessionId) return;
+
             const player = this.mPlayerSessionMap.get(sessionId);
             player.OnChange += (changeValues) => this.OnSyncRomotePlayer(sessionId, player);
-            // 需要延迟一会初始化用户状态
-            this.StartCoroutine(this.CoDealyOnSyncRomotePlayer(sessionId, player));
+            
+            if (this.mSessionId == sessionId) {
+               
+            }
+            else {
+                this.StartCoroutine(this.CoDealyOnSyncRomotePlayer(sessionId, player));
+            }
         });
     }
 
     Update(){
         if(this.mLocalPlayer == null) return ;
-        
-        this.CheckIfNeedUpdate();
-        this.SyncLocalPlayerTransform();
-        
+
+        //this.OnUpdateCharacterEuler();
+
+        this.OnUpdateDragMove();
+
         if(this.mLocalPlayer.character.tryJump || this.mLocalPlayer.character.tryMove){
             if(this.mLocalPlayer.character.CurrentState ===  CharacterState.Gesture){
                 this.SendEvent(sEventArg.GestureSync, null);
@@ -104,44 +122,147 @@ export default class PlayerManager extends BaseManager {
         }
     }
     
-    SyncLocalPlayerTransform(){
-        if(this.mIsUpdate){
-            const data = new RoomData();
-            let p = this.mLocalPlayerTransform;
-            const pos = new RoomData();
-            pos.Add("x", Math.round(p.localPosition.x * 100));
-            pos.Add("y", Math.round(p.localPosition.y * 100));
-            pos.Add("z", Math.round(p.localPosition.z * 100));
-            data.Add("position", pos.GetObject());
+    /* 玩家角色控制 Start */
 
-            const rot = new RoomData();
-            rot.Add("x", Math.round(p.localEulerAngles.x * 100));
-            rot.Add("y", Math.round(p.localEulerAngles.y * 100));
-            rot.Add("z", Math.round(p.localEulerAngles.z * 100));
-            data.Add("rotation", rot.GetObject());
-            
-            this.SendEvent(sEventArg.TransformSync, data);
-            this.mIsUpdate = false;
-            this.mPrePos = this.mLocalPlayerTransform.position;
+    private mPreCameraEulerY : number;
+    private mPreMoveForward : Vector3;
+    private mPreMoveRight : Vector3;
+    
+    OnUpdateCharacterEuler(){
+        // 控制角色角度
+        
+        if(this.mMoveState == MoveState.DragEnd)
+        {
+            //this.mLocalPlayer.character.transform.eulerAngles = new Vector3(0, this.mLocalCamera.cameraParent.eulerAngles.y, 0);
+            let angle_y =  Math.round(this.mLocalCamera.cameraParent.eulerAngles.y);
+            if(angle_y != this.mPreCameraEulerY){
+                this.mLocalPlayer.character.transform.eulerAngles = new Vector3(0, this.mLocalCamera.cameraParent.eulerAngles.y, 0);
+                this.mPreCameraEulerY = angle_y;
+            }
         }
     }
     
+    OnUpdateDragMove(){
+        if(this.mMoveState == MoveState.DragMove){
+            this.mMoveTimer += Time.deltaTime;
+            if(this.mMoveTimer > this.mKeepMoveInterval){
+                this.OnDragMove(this.mMoveDir);
+            }
+        }
+    }
+    
+    OnDragBegin(){
+        this.mMoveState = MoveState.DragBegin;
+        // this.mPreMoveForward = this.mLocalCamera.cameraParent.forward;
+        // this.mPreMoveRight = this.mLocalPlayerTransform.right;
+        this.mPreMoveForward = this.mLocalCamera.cameraParent.forward;
+        this.mPreMoveRight = this.mLocalCamera.cameraParent.right;
+        
+        const data = new RoomData();
+        data.Add("moveState", this.mMoveState);
+        let p = this.mLocalPlayerTransform;
+        const pos = new RoomData();
+        pos.Add("x", Math.round(p.localPosition.x * 100));
+        pos.Add("y", Math.round(p.localPosition.y * 100));
+        pos.Add("z", Math.round(p.localPosition.z * 100));
+        data.Add("position", pos.GetObject());
+        this.SendEvent(sEventArg.PlayerOperate, data);
+    }
+    
+    OnDragMove(moveDir : Vector2){
+        this.mMoveState = MoveState.DragMove;
+        this.mMoveDir = moveDir;
+        this.mMoveTimer = 0;
+        
+        const data = new RoomData();
+        data.Add("moveState", this.mMoveState);
+        let targetPos = this.mLocalPlayerTransform.position;
+        let speed = this.mLocalPlayer.character.RunSpeed ;
+        let dir = (this.mPreMoveRight  * moveDir.x + this.mPreMoveForward * moveDir.y).normalized;
+
+        targetPos += new Vector3(  speed * dir.x , 0, speed * dir.z);
+        data.Add("moveTarget_x", Math.round(targetPos.x * 100));
+        data.Add("moveTarget_y", Math.round(targetPos.y * 100));
+        data.Add("moveTarget_z", Math.round(targetPos.z * 100));
+        
+        let p = this.mLocalPlayerTransform;
+        const pos = new RoomData();
+        pos.Add("x", Math.round(p.localPosition.x * 100));
+        pos.Add("y", Math.round(p.localPosition.y * 100));
+        pos.Add("z", Math.round(p.localPosition.z * 100));
+        data.Add("position", pos.GetObject());
+        
+        this.SendEvent(sEventArg.PlayerOperate, data);
+    }
+    
+    
+    
+    OnDragEnd(){
+        this.mMoveState = MoveState.DragEnd;
+        const data = new RoomData();
+        data.Add("moveState", this.mMoveState);
+        let p = this.mLocalPlayerTransform;
+        const pos = new RoomData();
+        pos.Add("x", Math.round(p.localPosition.x * 100));
+        pos.Add("y", Math.round(p.localPosition.y * 100));
+        pos.Add("z", Math.round(p.localPosition.z * 100));
+        data.Add("position", pos.GetObject());
+        this.SendEvent(sEventArg.PlayerOperate, data);
+    }
+    
+    TryPlayerJump(){
+        this.mUIZepetoPlayerCtrl.Jump();
+    }
+
+    public UpdatePlayerState(players : any)
+    {
+        players.ForEach((sessionId : string, player : sPlayer) =>{
+            if(!this.mPlayerSessionMap.has(sessionId)){
+                this.mPlayerSessionMap.set(sessionId, player);
+                if(!this.mUserIdMap.has(player.id)) {
+                    // Update playerInfo
+                    this.SendEvent(sEventArg.PlayerInfoSync, new RoomData());
+                }
+            }
+
+            let character = this.GetCharacter(sessionId);
+            switch (player.moveState){
+                case MoveState.DragEnd:
+                    character.StopMoving();
+                    if(sessionId == this.mSessionId){
+                        this.OnDragEnd();
+                    }else {
+                        let targetPos = this.ParseVector3(player.position);
+                        character.MoveToPosition(targetPos);
+                    }
+                    break;
+                case MoveState.DragBegin:
+                    let pos = this.ParseVector3(player.position);
+                    if(Vector3.Distance(character.transform.position, pos) > this.mMaxMoveDistance){
+                        character.transform.position = pos;
+                    }                                         
+                    break;
+                case MoveState.DragMove:
+                    let targetPos = new Vector3( player.moveTarget.x * 0.01,player.moveTarget.y * 0.01, player.moveTarget.z * 0.01);
+                    character.MoveToPosition(targetPos);
+                    break;
+            }
+        });
+    }
+
+    // Jump
     SyncLocalPlayerState(state : CharacterState){
         const data = new RoomData();
         data.Add("state", state);
         this.SendEvent(sEventArg.PlayerStateSync, data);
     }
+    /* 玩家角色控制 End */
     
-    CheckIfNeedUpdate() {
-        this.mTimer += Time.deltaTime;
-        if(this.mTimer > this.mInterval){
-            this.mTimer = 0;
-            this.mIsUpdate = true;
-            if(Vector3.Distance(this.mPrePos, this.mLocalPlayerTransform.position) < 1) { this.mIsUpdate = false;}
-        }
-    }
+   
 
     *CoDealyOnSyncRomotePlayer(sessionId : string, player : sPlayer){
+        const zepetoCharacter = this.GetCharacter(sessionId);
+        this.SetPosition(zepetoCharacter, this.ParseVector3(player.position));
         yield new WaitForSeconds(0.4);
         this.OnSyncRomotePlayer(sessionId, player);
     }
@@ -171,8 +292,6 @@ export default class PlayerManager extends BaseManager {
                     zepetoCharacter.Jump();
                 }
             }
-            const pos = this.ParseVector3(player.position);
-            this.SetPosition(zepetoCharacter, pos);
         }
     }
     
@@ -201,18 +320,7 @@ export default class PlayerManager extends BaseManager {
         return result;
     }
     
-    public UpdatePlayerState(players : any)
-    {
-        players.ForEach((sessionId : string, player : sPlayer) =>{
-            if(!this.mPlayerSessionMap.has(sessionId)){
-                this.mPlayerSessionMap.set(sessionId, player);
-                if(!this.mUserIdMap.has(player.id)) {
-                    // Update playerInfo
-                    this.SendEvent(sEventArg.PlayerInfoSync, new RoomData());
-                }
-            }
-        });
-    }
+   
     
     public UpdatePlayerInfo(playerMapJson : string)
     {
@@ -327,8 +435,7 @@ export default class PlayerManager extends BaseManager {
     }
 
     SetPosition(character: ZepetoCharacter, position: Vector3) {
-        let dis = position - character.transform.position;
-        let distance: number = dis.sqrMagnitude;
+        let distance: number = Vector3.Distance(character.transform.position, position);
         if (distance < this.mMaxMoveDistance) {
             character.MoveToPosition(position);
         } else {

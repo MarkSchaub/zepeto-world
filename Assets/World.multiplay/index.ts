@@ -1,11 +1,20 @@
 import { Sandbox, SandboxOptions, SandboxPlayer } from "ZEPETO.Multiplay";
 import { sPlayer, sVector3, sPlayerInfo } from "ZEPETO.Multiplay.Schema";
 
-enum sEventArg {
+export enum sEventArg {
+    PlayerJoin = "PlayerJoin",
+    PlayerLeave = "PlayerLeave",
+    PlayerOperate = "PlayerOperate",   
     TransformSync = "TransformSync",
     PlayerStateSync = "PlayerStateSync",
     GestureSync = "GestureSync",
     PlayerInfoSync = "PlayerInfoSync",
+}
+
+enum MoveState{
+    DragEnd = 0,
+    DragBegin = 1,
+    DragMove = 2
 }
 
 export default class extends Sandbox {
@@ -16,27 +25,34 @@ export default class extends Sandbox {
     
     onCreate(options: SandboxOptions) {
 
-        this.onMessage(sEventArg.TransformSync, (client: SandboxPlayer, message) => {
+        this.onMessage(sEventArg.PlayerOperate, (client: SandboxPlayer, message) => {
             const player = this.state.players.get(client.sessionId);
-
-            const position = new sVector3();
-            position.x = message.position.x;
-            position.y = message.position.y;
-            position.z = message.position.z;
-            player.position = position;
-
-            const rotation = new sVector3();
-            rotation.x = message.rotation.x ;
-            rotation.y = message.rotation.y ;
-            rotation.z = message.rotation.z ;
-            player.rotation = rotation;
-            //console.log(`sEventArg.TransformSync: ${message.position.x} , ${message.position.z}`);
+            player.moveState = message.moveState;
+           
+            switch (player.moveState){
+                case MoveState.DragBegin:
+                    player.position.x = message.position.x;
+                    player.position.y = message.position.y;
+                    player.position.z = message.position.z;
+                    break;
+                case MoveState.DragEnd:
+                    player.position.x = message.position.x;
+                    player.position.y = message.position.y;
+                    player.position.z = message.position.z;
+                    break;
+                case MoveState.DragMove:
+                    player.moveTarget.x = message.moveTarget_x;
+                    player.moveTarget.y = message.moveTarget_y;
+                    player.moveTarget.z = message.moveTarget_z;
+                    break;
+            }
         });
+        
 
         this.onMessage(sEventArg.PlayerStateSync, (client: SandboxPlayer, message) => {
             const player = this.state.players.get(client.sessionId);
             player.state = message.state;
-            //console.log(`player.state: ${message.state}`);
+            console.log(`player.state: ${message.state}`);
         });
 
         this.onMessage(sEventArg.GestureSync, (client: SandboxPlayer, message) => {

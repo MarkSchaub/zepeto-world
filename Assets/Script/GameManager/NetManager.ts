@@ -5,6 +5,9 @@ import { sPlayer, sVector3, sPianoState, State } from "ZEPETO.Multiplay.Schema";
 import GameMain from '../GameMain'
 
 export enum sEventArg {
+    PlayerJoin = "PlayerJoin",
+    PlayerLeave = "PlayerLeave",
+    PlayerOperate = "PlayerOperate",
     TransformSync = "TransformSync",
     PlayerStateSync = "PlayerStateSync",
     GestureSync = "GestureSync",
@@ -47,6 +50,11 @@ export default class NetManager extends ZepetoScriptBehaviour {
         this.mMultiplay.RoomLeave += this.OnRoomLeave;
     }
     
+    private  frameCount : number = 0;
+    Update(){
+        this.frameCount ++;
+    }
+    
     OnDestroy(){
         if(this.mRoom.IsConnected){
             this.mRoom.Leave(true);
@@ -81,6 +89,7 @@ export default class NetManager extends ZepetoScriptBehaviour {
 
     private OnStateChange(state : State, isFirst : boolean)
     {
+        // console.error(`framecount = ${this.frameCount} , StateChange..`);
         this.OnReceiveEvent(sEventArg.PlayerStateSync, state.players);
         if(isFirst){
             // 获取用户信息

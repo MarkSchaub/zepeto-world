@@ -3,7 +3,7 @@ import UIManager from "./GameManager/UIManager"
 import MapManager from "./GameManager/MapManager"
 import NetManager, {sEventArg} from "./GameManager/NetManager"
 import PlayerManager from "./GameManager/PlayerManager"
-import {GameObject} from "UnityEngine";
+import {GameObject, Application} from "UnityEngine";
 
 import { sPlayer, sVector3, sPianoState, State, sPlayerInfo } from "ZEPETO.Multiplay.Schema";
 import {RoomData} from "ZEPETO.Multiplay";
